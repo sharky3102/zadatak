@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SELinux</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+
+<body>
+    <div class="p-2">
+        <div class="bg-primary text-primary-content p-6 rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold">Što je Security Enhanced Linux?</h1>
+        </div>
+        <div class="mt-8">
+            <p class="text-lg leading-relaxed mt-4">
+                <span class="bg-blue-600 p-1">SELinux (Security-Enhanced Linux)</span> je sigurnosni mehanizam koji
+                pruža obaveznu kontrolu pristupa na Linux sustavima. Razvijen kao otvoreni kod od strane NSA-e, SELinux
+                se integrira u jezgru Linuxa i pruža naprednu zaštitu od sigurnosnih prijetnji.
+            </p>
+            <h2 class="text-xl font-bold mt-8">Kako radi?</h2>
+            <p class="text-lg leading-relaxed mt-4">
+                SELinux koristi sustav obavezne kontrole pristupa (MAC) kako bi ograničio akcije korisnika i procesa na
+                sustavu. Svaki pristup resursima provjerava se prema definiranim pravilima, što omogućuje
+                detaljnu kontrolu i ograničavanje pristupa čak i ako program postane kompromitiran.
+            </p>
+            <h2 class="text-xl font-bold mt-8">Zašto je dobar?</h2>
+            <p class="text-lg leading-relaxed mt-4">
+                SELinux pruža znatno višu razinu sigurnosti u odnosu na klasične sustave Unixa. Njegove funkcije
+                kontrole pristupa osiguravaju ograničavanje privilegija programa i procesa, smanjujući rizik od
+                zlonamjernih napada i širenja sigurnosnih prijetnji.
+            </p>
+            <h2 class="text-xl font-bold mt-8">Prednosti i nedostaci</h2>
+            <p class="text-lg leading-relaxed mt-4">
+                Prednosti SELinux-a uključuju naprednu sigurnost, kontrolu pristupa na detaljnoj razini i smanjenje
+                rizika od sigurnosnih propusta. Međutim, njegova složenost i zahtjevna konfiguracija mogu biti izazovne
+                za manje iskusne korisnike.
+            </p>
+            <h2 class="text-xl font-bold mt-8">Gdje se koristi i tko ga koristi?</h2>
+            <p class="text-lg leading-relaxed mt-4">
+                SELinux se često koristi u distribucijama Linuxa poput Fedora, CentOS i RHEL kao osnovni mehanizam
+                sigurnosti. Koristi ga širok spektar korisnika, uključujući organizacije koje zahtijevaju visoku razinu
+                sigurnosti kao i pojedince koji žele zaštititi svoje sustave od sigurnosnih prijetnji.
+            </p>
+        </div>
+        <div class="mt-8 px-4">
+            <h2 class="text-xl font-bold">Zašto koristiti SELinux?</h2>
+            <ul class="list-disc mt-2">
+                <li class="text-lg">Povećava sigurnost sistema ograničavajući privilegije korisnika i procesa.</li>
+                <li class="text-lg">Omogućuje preciznu kontrolu pristupa resursima na sistemu.</li>
+                <li class="text-lg">Smanjuje rizik od zlonamjernih napada i širenja štetnih programa.</li>
+            </ul>
+        </div>
+        <div class="bg-primary text-primary-content p-6 rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold">Instalacija SELinuxa na Ubuntu</h1>
+        </div>
+        <div class="mt-8">
+            <p class="text-lg leading-relaxed mt-4">
+                Standardna moderna distribucija Ubuntu uključuje AppArmor, Linux sustav sigurnosti aplikacija koji
+                naglašava jednostavnost korištenja. AppArmor i SELinux rade kroz sučelje Linux
+                Security Module (LSM). Budući da Linux dopušta samo jedan aktivni LSM, prvi korak u instalaciji SELinuxa
+                je deaktivacija AppArmora.
+            </p>
+        </div>
+        <div class="mt-8">
+            <ol class="list-decimal pl-6">
+                <li class="text-lg leading-relaxed">
+                    <strong>Pokrenite ažuriranje paketa:</strong>
+                    <pre class="bg-gray-100 p-2">sudo apt update && sudo apt upgrade -y</pre>
+                    <img src="putanja/do/slike/azuriranje_paketa.png" alt="Primjer ažuriranja paketa" class="mt-4">
+                </li>
+                <li class="text-lg leading-relaxed mt-4">
+                    <strong>Provjerite status AppArmor usluge:</strong>
+                    <pre class="bg-gray-100 p-2">systemctl status apparmor</pre>
+                    <img src="putanja/do/slike/provjera_statusa.png" alt="Primjer provjere statusa AppArmor usluge"
+                        class="mt-4">
+                </li>
+                <li class="text-lg leading-relaxed mt-4">
+                    <strong>Zaustavite AppArmor uslugu:</strong>
+                    <pre class="bg-gray-100 p-2">sudo systemctl stop apparmor</pre>
+                    <img src="putanja/do/slike/zaustavljanje_apparmor.png" alt="Primjer zaustavljanja AppArmor usluge"
+                        class="mt-4">
+                </li>
+                <li class="text-lg leading-relaxed mt-4">
+                    <strong>Onemogućite AppArmor uslugu da se pokrene pri pokretanju sustava:</strong>
+                    <pre class="bg-gray-100 p-2">sudo systemctl disable apparmor</pre>
+                    <img src="putanja/do/slike/onemogucavanje_apparmor.png" alt="Primjer onemogućavanja AppArmor usluge"
+                        class="mt-4">
+                </li>
+            </ol>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -10,4 +10,10 @@ router.get("/", function (req, res, next) {
 router.get("/naslovnica", function (req, res, next) {
   res.render("naslovnica");
 });
+
+// GET /
+router.get("/seLinux", function (req, res, next) {
+  res.render("seLinux");
+});
+
 module.exports = router;
