@@ -67,27 +67,91 @@
                 <li class="text-lg leading-relaxed">
                     <strong>Pokrenite ažuriranje paketa:</strong>
                     <pre class="bg-gray-100 p-2">sudo apt update && sudo apt upgrade -y</pre>
-                    <img src="putanja/do/slike/azuriranje_paketa.png" alt="Primjer ažuriranja paketa" class="mt-4">
+                    <img src="/images/azuriranje_paketa.png" alt="Primjer ažuriranja paketa" class="mt-4">
                 </li>
                 <li class="text-lg leading-relaxed mt-4">
                     <strong>Provjerite status AppArmor usluge:</strong>
                     <pre class="bg-gray-100 p-2">systemctl status apparmor</pre>
-                    <img src="putanja/do/slike/provjera_statusa.png" alt="Primjer provjere statusa AppArmor usluge"
+                    <img src="/images/provjera_statusa.png" alt="Primjer provjere statusa AppArmor usluge"
                         class="mt-4">
                 </li>
                 <li class="text-lg leading-relaxed mt-4">
                     <strong>Zaustavite AppArmor uslugu:</strong>
                     <pre class="bg-gray-100 p-2">sudo systemctl stop apparmor</pre>
-                    <img src="putanja/do/slike/zaustavljanje_apparmor.png" alt="Primjer zaustavljanja AppArmor usluge"
-                        class="mt-4">
                 </li>
                 <li class="text-lg leading-relaxed mt-4">
                     <strong>Onemogućite AppArmor uslugu da se pokrene pri pokretanju sustava:</strong>
                     <pre class="bg-gray-100 p-2">sudo systemctl disable apparmor</pre>
-                    <img src="putanja/do/slike/onemogucavanje_apparmor.png" alt="Primjer onemogućavanja AppArmor usluge"
+                    <img src="/images/status_apparmor.png" alt="Primjer onemogućavanja AppArmor usluge"
                         class="mt-4">
                 </li>
             </ol>
+        </div>
+        <div class="bg-primary text-primary-content p-6 rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold">Instalacija SELinuxa</h1>
+        </div>
+        <div class="mt-8">
+            <ol class="list-decimal pl-6">
+                <li class="text-lg leading-relaxed">
+                    <strong>Instalirajte potrebne pakete:</strong>
+                    <pre class="bg-gray-100 p-2">sudo apt install policycoreutils selinux-basics selinux-utils -y</pre>
+                    <img src="/images/instalacijaSE.png" alt="Primjer" class="mt-4">
+                </li>
+                <li class="text-lg leading-relaxed mt-4">
+                    <strong>Aktivirajte SELinux:</strong>
+                    <pre class="bg-gray-100 p-2">sudo selinux-activate</pre>
+                    <img src="/images/aktivacija.png" alt="Primjer" class="mt-4">
+                </li>
+                <li class="text-lg leading-relaxed mt-4">
+                    <strong>Potvrdite trenutni status instalacije:</strong>
+                    <pre class="bg-gray-100 p-2">getenforce</pre>
+                    <p class="mt-2">Pisat će DISABLED,Ovo znači da je vaš SELinux spreman za rad. On je "aktivan", ali još uvijek nije
+                        uključen. NEMOJTE REBOOT-at SISTEM još.</p>
+                </li>
+                <li class="text-lg leading-relaxed mt-4">
+                    <strong>Koristite naredbu sestatus za detaljniji pregled:</strong>
+                    <pre class="bg-gray-100 p-2">sestatus</pre>
+                    <p class="mt-2">Ova naredba pruža detaljnije informacije o trenutnom stanju SELinuxa.</p>
+                    <img src="/images/sestatus.png" alt="Primjer" class="mt-4">
+                </li>
+            </ol>
+        </div>
+        <div class="mt-8">
+            <ol class="list-decimal pl-6">
+                <li class="text-lg leading-relaxed">
+                    <strong>Omogućavanje SELinux-a:</strong>
+                    <pre class="bg-gray-200 p-2">sudo nano /etc/selinux/config</pre>
+                    <p class="mt-2">Omogućite SELinux tako što ćete promijeniti liniju:</p>
+                    <pre class="bg-gray-200 p-2">SELINUX=permissive</pre>
+                    <p class="mt-2">u</p>
+                    <pre class="bg-gray-200 p-2">SELINUX=enforcing</pre>
+                    <img src="/images/enforcing.png" alt="Primjer" class="mt-4">
+                </li>
+                <li class="text-lg leading-relaxed mt-4">
+                    <strong>Potvrda promjene putem /etc/selinux/config:</strong>
+                    <pre class="bg-gray-200 p-2">sudo reboot</pre>
+                    <p class="mt-2">Provjerite ponovno putem /etc/selinux/config:</p>
+                    <pre class="bg-gray-200 p-2">cat /etc/selinux/config</pre>
+                </li>
+        </div>
+        <br>
+        <div class="bg-primary text-primary-content p-6 rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold">Zaključak</h1>
+        </div>
+        
+        <div class="mt-8">
+            <p class="text-lg leading-relaxed">
+                Manje od nekoliko desetaka naredbi potrebno je za instalaciju, omogućavanje i aktiviranje SELinux-a na
+                Ubuntu 22.04. Brzo možete imati SELinux u enforcing načinu rada.
+            </p>
+            <p class="text-lg leading-relaxed mt-4">
+                SELinux je moćan alat za poboljšanje sigurnosti vašeg sustava, a njegovo ispravno konfiguriranje može
+                pružiti dodatnu razinu zaštite od različitih sigurnosnih prijetnji. Uz pažljivo praćenje uputa i
+                razumijevanje osnova SELinux-a, možete osigurati sigurniju i pouzdaniju radnu okolinu na vašem Ubuntu
+                sustavu.
+            </p>
+            <img src="/images/error.png" alt="Primjer" class="mt-4">
+            <strong>Nažalost nakon rebootanja desio se ovaj problem :(</strong>
         </div>
     </div>
 </body>
