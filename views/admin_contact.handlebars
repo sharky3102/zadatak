@@ -3,20 +3,21 @@
     <div class="bg-primary text-primary-content p-6 rounded-lg shadow-md">
         <h1 class="text-3xl font-bold">Ovjde možete upisati svoju poruku administratoru.</h1>
     </div>
-<br>
+    <br>
     <div class="pb-2 flex flex-col" x-data="{}">
-        
+
         <form method="post" action="/admin/sent">
             <label>Poruka</label>
             <br>
-            <textarea name="description" class="bg-neutral" rows="10" required="" minlength="3" {{#if
-                result.edit}}x-text="'{{result.edit.description}}'" {{/if}}>
-            </textarea>
+            <textarea id="message" rows="4"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Write your thoughts here..." {{#if result.edit}}x-text="'{{result.edit.description}}'"
+                {{/if}}></textarea>
             <br>
-            
+        
             {{> form_buttons }}
         </form>
-    
+
     </div>
 
     {{#if result.validation_error}}
