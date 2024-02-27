@@ -1,0 +1,25 @@
+<div class="p-2">
+    {{#if result.messageSent}}
+        <div class="mt-4">
+            <div class="card w-96 bg-primary text-primary-content">
+                <div class="card-body">
+                    <h2 class="card-title">Uspjeh!</h2>
+                    <p>
+                        Uspješno ste poslali poruku administratoru 
+                    </p>
+                    <div class="card-actions justify-end">
+                        <a class="btn" href="/naslovnica">Vrati se natrag na naslovnicu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+
+    {{#if result.validation_error}}
+        {{> validation_error }}
+    {{/if}}
+
+    {{#if result.database_error}}
+        {{> database_error}}
+    {{/if}}
+</div>

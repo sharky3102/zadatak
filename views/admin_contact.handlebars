@@ -1,0 +1,30 @@
+<div class="p-2">
+
+    <div class="bg-primary text-primary-content p-6 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold">Ovjde možete upisati svoju poruku administratoru.</h1>
+    </div>
+<br>
+    <div class="pb-2 flex flex-col" x-data="{}">
+        
+        <form method="post" action="/admin/sent">
+            <label>Poruka</label>
+            <br>
+            <textarea name="description" class="bg-neutral" rows="10" required="" minlength="3" {{#if
+                result.edit}}x-text="'{{result.edit.description}}'" {{/if}}>
+            </textarea>
+            <br>
+            
+            {{> form_buttons }}
+        </form>
+    
+    </div>
+
+    {{#if result.validation_error}}
+    {{> validation_error }}
+    {{/if}}
+
+    {{#if result.database_error}}
+    {{> database_error}}
+    {{/if}}
+
+</div>
