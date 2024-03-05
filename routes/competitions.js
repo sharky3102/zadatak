@@ -143,37 +143,37 @@ router.get("/signed/:id", function (req, res, next) {
 
 });
 
-// GET /competitions/results
-router.get("/results/:id", function (req, res, next) {
+// GET /competitions/score/:id
+router.get("/score/:id", authRequired, function (req, res, next) {
     // do validation
     const result = schema_id.validate(req.params);
     if (result.error) {
-        throw new Error("Neispravan poziv");
+        res.render("competitions/form", { result: { validation_error: true, display_form: true } });
+        return;
     }
 
-    const stmt = db.prepare("");
+    const stmt = db.prepare("SELECT a.id, u.name AS natjecatelj, a.score, c.name as natjecanje FROM users u, signed_up a, competitions c WHERE a.userid = u.id and a.competitionid = c.id and c.id = ? ORDER BY a.score;");
+    const dbResult = stmt.all(req.params.id);
 
+    res.render("competitions/score", { result: { items: dbResult } });
 });
 
-// GET /competitions/myresult
-router.get("/myresult/:id", function (req, res, next) {
+// POST /competitions/score/:id
+router.post("/score/:id", adminRequired, function (req, res, next) {
     // do validation
-    const result = schema_id.validate(req.params);
+    const result = schema_edit.validate(req.body);
     if (result.error) {
-        throw new Error("Neispravan poziv");
+        res.render("competitions/form", { result: { validation_error: true, display_form: true } });
+        return;
     }
-
-    const stmt = db.prepare("SELECT score FROM signed_up WHERE userid = ? AND competitionid = ?;")
-    const signUpResult = stmt.all(req.user.userid, req.user.competitionid);
-
-    if (signUpResult.length > 0) {
-        res.render("competitions/myresult", { result: { score: signUpResult[0].score } });
+    const stmt = db.prepare("INSERT INTO signed_up SET score = ? WHERE id = ?;");
+    const upResult = stmt.run(req.body.score);
+    if (upResult.changes && upResult.changes === 1) {
+        res.redirect("/competitions/score");
     } else {
-        res.render("competitions/myresult", { result: { no_result: true } });
+        res.render("competitions/form", { result: { database_error: true } });
     }
-
 });
-
 
 
 module.exports = router;
