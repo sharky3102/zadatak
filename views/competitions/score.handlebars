@@ -34,7 +34,7 @@
                 <td class="flex flex-wrap gap-2">
                     {{#if ../user.is_admin }}
                     <form method="post"
-                        action="/comp"
+                        action="/competitions/score/{{this.id}}"
                         class="flex flex-col gap-2">
                         {{> form_buttons }}
                     </form>
