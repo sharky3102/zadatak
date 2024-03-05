@@ -169,7 +169,7 @@ router.post("/score/:id", adminRequired, function (req, res, next) {
     const stmt = db.prepare("INSERT INTO signed_up SET score = ? WHERE id = ?;");
     const upResult = stmt.run(req.body.score);
     if (upResult.changes && upResult.changes === 1) {
-        res.redirect("/competitions/score");
+        res.redirect("competitions/score");
     } else {
         res.render("competitions/form", { result: { database_error: true } });
     }
