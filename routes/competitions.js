@@ -148,32 +148,38 @@ router.get("/score/:id", authRequired, function (req, res, next) {
     // do validation
     const result = schema_id.validate(req.params);
     if (result.error) {
-        res.render("competitions/form", { result: { validation_error: true, display_form: true } });
-        return;
+        throw new Error("Neispravan poziv");
     }
-
-    const stmt = db.prepare("SELECT a.id, u.name AS natjecatelj, a.score, c.name as natjecanje FROM users u, signed_up a, competitions c WHERE a.userid = u.id and a.competitionid = c.id and c.id = ? ORDER BY a.score;");
+    const stmt = db.prepare(`
+    SELECT a.id, u.name AS natjecatelj, a.score, c.name AS natjecanje, a.competitionid
+    FROM users u, signed_up a, competitions c
+    WHERE a.userid = u.id AND a.competitionid = c.id AND c.id = ?
+    ORDER BY a.score
+`);
     const dbResult = stmt.all(req.params.id);
-
+if (!dbResult){
+    throw new Error ("Nema rezultata za traženi ID natjecanja");
+}
     res.render("competitions/score", { result: { items: dbResult } });
 });
 
-// POST /competitions/score/:id
-router.post("/score/:id", adminRequired, function (req, res, next) {
+// POST /competitions/scoreUpdate/:id
+router.post("/scoreUpdate/:id", authRequired, function (req, res, next) {
     // do validation
-    const result = schema_edit.validate(req.body);
+    const result = schema_id.validate(req.params);
     if (result.error) {
-        res.render("competitions/form", { result: { validation_error: true, display_form: true } });
-        return;
+        throw new Error("Neispravan poziv");
     }
-    const stmt = db.prepare("INSERT INTO signed_up SET score = ? WHERE id = ?;");
-    const upResult = stmt.run(req.body.score);
-    if (upResult.changes && upResult.changes === 1) {
-        res.redirect("competitions/score");
+    const stmt = db.prepare("UPDATE signed_up SET score = ? WHERE id = ?;");
+    const updateResult = stmt.run(req.body.score, req.params.id);
+    console.log("test:" + req.body.score);
+    if (!updateResult) {
+        throw new Error("Nesipravan poziv");
     } else {
-        res.render("competitions/form", { result: { database_error: true } });
-    }
-});
+        res.redirect("/competitions/score/" + req.body.competitionid);
 
+    }
+
+});
 
 module.exports = router;
