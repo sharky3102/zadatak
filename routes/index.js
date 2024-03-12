@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const app = express();
-const { adminRequired } = require("../services/auth.js");
+const { adminRequired, authRequired } = require("../services/auth.js");
 const Joi = require("joi");
+const { db } = require("../services/db.js");
 
 app.use(express.static('public'));
 
@@ -33,20 +34,17 @@ const schema_edit = Joi.object({
 });
 
 // POST /admin/sent
-router.post("/admin/sent", adminRequired, function (req, res, next) {
+router.post("/admin/sent", authRequired, function (req, res, next) {
   // do validation
-  const result = schema_edit.validate(req.body);
-  if (result.error) {
-      res.render("admin/sent", { result: { validation_error: true, display_form: true } });
-      return;
-  }
-  const stmt = db.prepare("UPDATE messages SET message = ?, sender_id = ? WHERE id = ?;");
-  const messageSent = stmt.run(req.body.message, req.body.sender_id, req.body.id);
-  
+  console.log("Test1")
+  console.log("test2")
+  const stmt = db.prepare("INSERT INTO messages (message, sender_id) VALUES(?,?) ;");
+  const messageSent = stmt.run(req.body.message, req.user.sub);
+
   if (messageSent.changes && messageSent.changes === 1) {
-      res.render("admin/sent", { result: { messageSent: true} });
+    res.render("admin/sent", { result: { messageSent: true } });
   } else {
-      res.render("admin/sent", { result: { database_error: true } });
+    res.render("admin/sent", { result: { database_error: true } });
   }
 });
 
