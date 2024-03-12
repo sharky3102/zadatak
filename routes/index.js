@@ -35,9 +35,7 @@ const schema_edit = Joi.object({
 
 // POST /admin/sent
 router.post("/admin/sent", authRequired, function (req, res, next) {
-  // do validation
-  console.log("Test1")
-  console.log("test2")
+  
   const stmt = db.prepare("INSERT INTO messages (message, sender_id) VALUES(?,?) ;");
   const messageSent = stmt.run(req.body.message, req.user.sub);
 

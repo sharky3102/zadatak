@@ -25,12 +25,14 @@ const schema_id = Joi.object({
 
 // GET /competitions/delete/:id
 router.get("/delete/:id", adminRequired, function (req, res, next) {
-    n
     // do validation
     const result = schema_id.validate(req.params);
     if (result.error) {
         throw new Error("Neispravan poziv");
     }
+
+    const stmt2 = db.prepare("DELETE FROM signed_up WHERE competitionid = ?;");
+    const deleteResult2 = stmt2.run (req.params.id);
 
     const stmt = db.prepare("DELETE FROM competitions WHERE id = ?;");
     const deleteResult = stmt.run(req.params.id);
@@ -133,10 +135,12 @@ router.get("/signed/:id", function (req, res, next) {
     }
 
     const stmt = db.prepare("INSERT INTO signed_up (userid, competitionid, appliedat) VALUES (?,?,?);")
-    const signUpResult = stmt.run(req.user.sub, req.params.id, new Date().toISOString());
+    const signUp = stmt.run(req.user.sub, req.params.id, new Date().toISOString());
+    console.log("test1")
 
-    if (signUpResult.changes && signUpResult.changes === 1) {
+    if (signUp.changes && signUp.changes === 1) {
         res.render("competitions/signed", { result: { signedUp: true, is_signed: true } });
+        console.log("test2")
     } else {
         res.render("competitions/signed", { result: { database_error: true } });
     }
@@ -181,5 +185,6 @@ router.post("/scoreUpdate/:id", authRequired, function (req, res, next) {
     }
 
 });
+
 
 module.exports = router;
