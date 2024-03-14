@@ -226,7 +226,7 @@ router.get("/pdf/:id", authRequired, function (req, res, next) {
             doc.moveDown().rect(20, doc.y, 500, 1).fillAndStroke("black");
         }
     });
-
+    
     doc.end();
 });
 
