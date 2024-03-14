@@ -4,6 +4,7 @@ const { authRequired, adminRequired } = require("../services/auth.js");
 const Joi = require("joi");
 const { db } = require("../services/db.js");
 const { decode } = require("jsonwebtoken");
+const PDFDocument = require("pdfkit");
 
 // GET /competitions
 router.get("/", authRequired, function (req, res, next) {
@@ -184,6 +185,49 @@ router.post("/scoreUpdate/:id", authRequired, function (req, res, next) {
 
     }
 
+});
+
+// GET /competitions/pdf/:id
+router.get("/pdf/:id", authRequired, function (req, res, next) {
+    const competitionId = req.params.id;
+
+    const competitionStmt = db.prepare("SELECT name, apply_till FROM competitions WHERE id = ?");
+    const competitionData = competitionStmt.get(competitionId);
+
+    const scoreStmt = db.prepare(`
+        SELECT u.name AS natjecatelj, a.score, c.name AS natjecanje
+        FROM users u, signed_up a, competitions c
+        WHERE a.userid = u.id AND a.competitionid = c.id AND c.id = ?
+        ORDER BY a.score DESC
+    `);
+    const scoreResults = scoreStmt.all(competitionId);
+
+    if (!competitionData || !scoreResults) {
+        res.status(404).send("Data not found");
+        return;
+    }
+
+    const PDFDocument = require("pdfkit");
+    const doc = new PDFDocument();
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename="${competitionData.name}_report.pdf"`);
+
+    doc.pipe(res);
+    doc.fontSize(16).text(`COMPETITION NAME: ${competitionData.name}`, { align: "center" });
+    doc.fontSize(14).text(`Date: ${new Date(competitionData.apply_till).toLocaleDateString()}`, { align: "center" });
+    doc.moveDown();
+
+    doc.fontSize(16).text("Ljestvica natjecatelja", { align: "center" });
+    doc.moveDown();
+
+    scoreResults.forEach((result, index) => {
+        doc.text(`${index + 1}. ${result.natjecatelj} - ${result.score}`, { indent: 20 });
+        if (index === 2) {
+            doc.moveDown().rect(20, doc.y, 500, 1).fillAndStroke("black");
+        }
+    });
+
+    doc.end();
 });
 
 
