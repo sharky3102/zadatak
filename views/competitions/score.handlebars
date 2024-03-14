@@ -23,12 +23,8 @@
                 <td>{{this.score}}</td>
                 <td class="flex flex-wrap gap-2">
                     {{#if ../user.is_admin }}
-<<<<<<< HEAD
-                    <form method="post"
-                        action="/competitions/score/{{this.id}}"
-=======
+
                     <form method="post" action="/competitions/scoreUpdate/{{this.id}}"
->>>>>>> 3821d9f230180da87d2d93acf648f1deffc2a742
                         class="flex flex-col gap-2">
                         {{> form_buttons }}
                         <input type="number" name="score" placeholder="Unesi bodove"
