@@ -210,11 +210,11 @@ router.get("/pdf/:id", authRequired, function (req, res, next) {
     const PDFDocument = require("pdfkit");
     const doc = new PDFDocument();
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `attachment; filename="${competitionData.name}_report.pdf"`);
+    res.setHeader("Content-Disposition", `attachment; filename="${competitionData.name}_reultati.pdf"`);
 
     doc.pipe(res);
-    doc.fontSize(16).text(`COMPETITION NAME: ${competitionData.name}`, { align: "center" });
-    doc.fontSize(14).text(`Date: ${new Date(competitionData.apply_till).toLocaleDateString()}`, { align: "center" });
+    doc.fontSize(24).text(`Naziv natjecanja: ${competitionData.name}`, { align: "center" });
+    doc.fontSize(16).text(`Datum: ${new Date(competitionData.apply_till).toLocaleDateString()}`, { align: "center" });
     doc.moveDown();
 
     doc.fontSize(16).text("Ljestvica natjecatelja", { align: "center" });
