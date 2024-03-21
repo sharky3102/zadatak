@@ -233,9 +233,11 @@ router.get("/pdf/:id", authRequired, function (req, res, next) {
 
     scoreResults.forEach((result, index) => {
         doc.text(`${index + 1}. ${result.natjecatelj} - ${result.score}`, { indent: 20 });
-        if (index === 2) {
-            doc.moveDown().rect(20, doc.y, 500, 1).fillAndStroke("black");
-        }
+    if ((index + 1) % 3 === 0 && index !== scoreResults.length - 1) {
+        doc.moveDown().rect(10, doc.y, 500, 1).fillAndStroke("black");
+    } else {
+        doc.moveDown();
+    }
     });
 
     doc.end();
