@@ -1,0 +1,27 @@
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox</title>
+    <style>
+        .message-bubble {
+            border: 1px solid #1c1818;
+            background-color: #1c1818;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mt-8 px-4">
+        <h1 class="text-xl font-bold mt-8">Dobrodošli u inbox!</h1>
+        {{#each messages}}
+        <div class="message-bubble">
+            <p>{{this.message}}</p>
+            <p><strong>Poslao:</strong> {{this.sender_id}}</p>
+        </div>
+        {{/each}}
+    </div>
+</body>

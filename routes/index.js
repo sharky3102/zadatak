@@ -35,15 +35,30 @@ const schema_edit = Joi.object({
 
 // POST /admin/sent
 router.post("/admin/sent", authRequired, function (req, res, next) {
-  
-  const stmt = db.prepare("INSERT INTO messages (message, sender_id) VALUES(?,?) ;");
+  const schema = Joi.object({
+      message: Joi.string().min(3).max(255).required(),
+  });
+
+  const validationResult = schema.validate(req.body);
+  if (validationResult.error) {
+      return res.status(400).json({ error: validationResult.error.details[0].message });
+  }
+
+  const stmt = db.prepare("INSERT INTO messages (message, sender_id) VALUES (?, ?)");
   const messageSent = stmt.run(req.body.message, req.user.sub);
 
   if (messageSent.changes && messageSent.changes === 1) {
-    res.render("admin/sent", { result: { messageSent: true } });
+      res.render("admin/sent", { result: { messageSent: true } });
   } else {
-    res.render("admin/sent", { result: { database_error: true } });
+      res.render("admin/sent", { result: { database_error: true } });
   }
+});
+// GET /admin/inbox
+router.get("/admin/inbox", adminRequired, function (req, res) {
+  // Ovdje dohvatite poruke iz baze podataka i prosljeđujte ih u šablon za prikaz
+  const stmt = db.prepare("SELECT * FROM messages");
+  const messages = stmt.all();
+  res.render("admin/inbox", { messages: messages });
 });
 
 module.exports = router;

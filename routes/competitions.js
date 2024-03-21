@@ -33,7 +33,7 @@ router.get("/delete/:id", adminRequired, function (req, res, next) {
     }
 
     const stmt2 = db.prepare("DELETE FROM signed_up WHERE competitionid = ?;");
-    const deleteResult2 = stmt2.run (req.params.id);
+    const deleteResult2 = stmt2.run(req.params.id);
 
     const stmt = db.prepare("DELETE FROM competitions WHERE id = ?;");
     const deleteResult = stmt.run(req.params.id);
@@ -141,10 +141,21 @@ router.get("/signed/:id", function (req, res, next) {
 
     if (signUp.changes && signUp.changes === 1) {
         res.render("competitions/signed", { result: { signedUp: true, is_signed: true } });
-        console.log("test2")
+        
+        const competitionStmt = db.prepare("SELECT name FROM competitions WHERE id = ?");
+        const competitionName = competitionStmt.get(req.params.id).name;
+
+        const message = `Korisnik ${req.user.name} se prijavio na natjecanje ${competitionName}.`;
+        const adminId = 1; 
+
+        const adminMessageStmt = db.prepare("INSERT INTO messages (message, sender_id) VALUES (?, ?);");
+        adminMessageStmt.run(message, adminId);
+
+
     } else {
         res.render("competitions/signed", { result: { database_error: true } });
     }
+
 
 });
 
@@ -162,9 +173,9 @@ router.get("/score/:id", authRequired, function (req, res, next) {
     ORDER BY a.score
 `);
     const dbResult = stmt.all(req.params.id);
-if (!dbResult){
-    throw new Error ("Nema rezultata za traženi ID natjecanja");
-}
+    if (!dbResult) {
+        throw new Error("Nema rezultata za traženi ID natjecanja");
+    }
     res.render("competitions/score", { result: { items: dbResult } });
 });
 
@@ -226,9 +237,8 @@ router.get("/pdf/:id", authRequired, function (req, res, next) {
             doc.moveDown().rect(20, doc.y, 500, 1).fillAndStroke("black");
         }
     });
-    
+
     doc.end();
 });
-
 
 module.exports = router;
