@@ -134,7 +134,6 @@ router.get("/signed/:id", function (req, res, next) {
         res.render("competitions/signed", { result: { already_signed_up: true } });
         return;
     }
-
     const stmt = db.prepare("INSERT INTO signed_up (userid, competitionid, appliedat) VALUES (?,?,?);")
     const signUp = stmt.run(req.user.sub, req.params.id, new Date().toISOString());
     console.log("test1")
