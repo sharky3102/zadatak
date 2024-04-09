@@ -17,6 +17,9 @@
 <body>
     <div class="mt-8 px-4">
         <h1 class="text-xl font-bold mt-8">Dobrodošli u inbox!</h1>
+        <br>
+        <a href="/admin/inbox/delete-all" class="btn btn-danger">Obriši sve poruke</a>
+        <br>
         {{#each messages}}
         <div class="message-bubble">
             <p>{{this.message}}</p>

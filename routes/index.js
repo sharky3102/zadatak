@@ -60,5 +60,23 @@ router.get("/admin/inbox", adminRequired, function (req, res) {
   const messages = stmt.all();
   res.render("admin/inbox", { messages: messages });
 });
+// GET /admin/poruke/delete-all
+router.get("/admin/inbox/delete-all", adminRequired, function (req, res) {
+  const checkStmt = db.prepare("SELECT COUNT(*) AS count FROM messages");
+  const countResult = checkStmt.get();
+
+  if (countResult.count === 0) {
+      res.render("admin/poruke", { result: { noMessages: true } });
+  } else {
+      const stmt = db.prepare("DELETE FROM messages");
+      const deleteResult = stmt.run();
+      if (deleteResult.changes && deleteResult.changes === 1) {
+          res.render("admin/poruke", { result: { deleteResult: true } });
+      } else {
+          throw new Error("Operacija brisanja nije uspjela");
+      }
+  }
+});
+
 
 module.exports = router;

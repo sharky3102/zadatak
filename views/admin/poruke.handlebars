@@ -1,0 +1,32 @@
+<div class="p-2">
+    {{#if result.deleteResult}}
+    <div class="mt-4">
+        <div class="card w-96 bg-primary text-primary-content">
+            <div class="card-body">
+                <h2 class="card-title">Uspjeh!</h2>
+                <p>
+                    Uspješno ste se obrisali sve poruke!
+                </p>
+                <div class="card-actions justify-end">
+                    <a class="btn" href="/naslovnica">Nastavi na naslovnicu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+    {{#if result.noMessages}}
+    <div class="mt-4">
+        <div class="card w-96 bg-primary text-primary-content">
+            <div class="card-body">
+                <h2 class="card-title">Nažalost</h2>
+                <p>
+                    nema poruka koje bi ste mogli obrisati.
+                </p>
+                <div class="card-actions justify-end">
+                    <a class="btn" href="/naslovnica">Nastavi na naslovnicu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+</div>
