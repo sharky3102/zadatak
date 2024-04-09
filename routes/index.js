@@ -55,8 +55,11 @@ router.post("/admin/sent", authRequired, function (req, res, next) {
 });
 // GET /admin/inbox
 router.get("/admin/inbox", adminRequired, function (req, res) {
-  // Ovdje dohvatite poruke iz baze podataka i prosljeđujte ih u šablon za prikaz
-  const stmt = db.prepare("SELECT * FROM messages");
+  const stmt = db.prepare(`
+    SELECT m.message, u.name 
+    FROM messages m
+    JOIN users u ON m.sender_id = u.id
+    `);
   const messages = stmt.all();
   res.render("admin/inbox", { messages: messages });
 });
